@@ -1,0 +1,815 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище Job_vacancyModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Image" Type="image" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Questionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="TelephonNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CityId" Type="bigint" Nullable="false" />
+          <Property Name="DateOfBirth" Type="date" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NationalityId" Type="int" Nullable="false" />
+          <Property Name="Experience" Type="int" Nullable="false" />
+          <Property Name="Info" Type="ntext" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="IsTaken" Type="int" />
+          <Property Name="FileExtension" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Job_vacancy.dbo.UserHasQuestionary" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="UserHasQuestionary">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="QuestionaryId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="QuestionaryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vacancies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" />
+          <Property Name="NumberOfSeats" Type="int" Nullable="false" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="Image" Type="image" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Job_vacancy.dbo.VacancyHasQuestionary" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="VacancyHasQuestionary">
+          <Key>
+            <PropertyRef Name="VacancyId" />
+            <PropertyRef Name="QuestionaryId" />
+          </Key>
+          <Property Name="VacancyId" Type="int" Nullable="false" />
+          <Property Name="QuestionaryId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Questionary_City">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questionary">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questionary_Nationality">
+          <End Role="Nationality" Type="Self.Nationality" Multiplicity="1" />
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nationality">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questionary">
+              <PropertyRef Name="NationalityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserHasQuestionary_Questionary">
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="1" />
+          <End Role="UserHasQuestionary" Type="Self.UserHasQuestionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserHasQuestionary">
+              <PropertyRef Name="QuestionaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserHasQuestionary_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserHasQuestionary" Type="Self.UserHasQuestionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserHasQuestionary">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vacancies_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Vacancies" Type="Self.Vacancies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vacancies">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VacancyHasQuestionary_Questionary">
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="1" />
+          <End Role="VacancyHasQuestionary" Type="Self.VacancyHasQuestionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VacancyHasQuestionary">
+              <PropertyRef Name="QuestionaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VacancyHasQuestionary_Vacancies">
+          <End Role="Vacancies" Type="Self.Vacancies" Multiplicity="1" />
+          <End Role="VacancyHasQuestionary" Type="Self.VacancyHasQuestionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vacancies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VacancyHasQuestionary">
+              <PropertyRef Name="VacancyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddUserHasQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddVacancyHasQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+          <Parameter Name="VacancyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CAUNTRIES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteQuest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userId" Type="int" Mode="In" />
+          <Parameter Name="VacancyId" Type="int" Mode="In" />
+          <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCityId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CityName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetCityValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CityId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetNatianalityId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NatianalityName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetNationalityValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NationalityId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetQuestionaryByVacancy" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VacancyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetSelectedQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="QestionaryId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetVacanciesByDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VacanciesId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetVacancyByQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище Job_vacancyModelContainer">
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nationality" EntityType="Self.Nationality" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Questionary" EntityType="Self.Questionary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vacancies" EntityType="Self.Vacancies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserHasQuestionary" EntityType="Self.UserHasQuestionary" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserHasQuestionary].[UserId] AS [UserId], 
+    [UserHasQuestionary].[QuestionaryId] AS [QuestionaryId]
+    FROM [dbo].[UserHasQuestionary] AS [UserHasQuestionary]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VacancyHasQuestionary" EntityType="Self.VacancyHasQuestionary" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VacancyHasQuestionary].[VacancyId] AS [VacancyId], 
+    [VacancyHasQuestionary].[QuestionaryId] AS [QuestionaryId]
+    FROM [dbo].[VacancyHasQuestionary] AS [VacancyHasQuestionary]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Questionary_City" Association="Self.FK_Questionary_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="Questionary" EntitySet="Questionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questionary_Nationality" Association="Self.FK_Questionary_Nationality">
+            <End Role="Nationality" EntitySet="Nationality" />
+            <End Role="Questionary" EntitySet="Questionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserHasQuestionary_Questionary" Association="Self.FK_UserHasQuestionary_Questionary">
+            <End Role="Questionary" EntitySet="Questionary" />
+            <End Role="UserHasQuestionary" EntitySet="UserHasQuestionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserHasQuestionary_User" Association="Self.FK_UserHasQuestionary_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserHasQuestionary" EntitySet="UserHasQuestionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vacancies_Department" Association="Self.FK_Vacancies_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Vacancies" EntitySet="Vacancies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VacancyHasQuestionary_Questionary" Association="Self.FK_VacancyHasQuestionary_Questionary">
+            <End Role="Questionary" EntitySet="Questionary" />
+            <End Role="VacancyHasQuestionary" EntitySet="VacancyHasQuestionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VacancyHasQuestionary_Vacancies" Association="Self.FK_VacancyHasQuestionary_Vacancies">
+            <End Role="Vacancies" EntitySet="Vacancies" />
+            <End Role="VacancyHasQuestionary" EntitySet="VacancyHasQuestionary" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Job_vacancyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Questionary" Relationship="Self.FK_Questionary_City" FromRole="City" ToRole="Questionary" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Vacancies" Relationship="Self.FK_Vacancies_Department" FromRole="Department" ToRole="Vacancies" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Questionary" Relationship="Self.FK_Questionary_Nationality" FromRole="Nationality" ToRole="Questionary" />
+        </EntityType>
+        <EntityType Name="Questionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TelephonNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CityId" Type="Int64" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NationalityId" Type="Int32" Nullable="false" />
+          <Property Name="Experience" Type="Int32" Nullable="false" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsTaken" Type="Int32" />
+          <NavigationProperty Name="City" Relationship="Self.FK_Questionary_City" FromRole="Questionary" ToRole="City" />
+          <NavigationProperty Name="Nationality" Relationship="Self.FK_Questionary_Nationality" FromRole="Questionary" ToRole="Nationality" />
+          <NavigationProperty Name="User" Relationship="Self.UserHasQuestionary" FromRole="Questionary" ToRole="User" />
+          <NavigationProperty Name="Vacancies" Relationship="Self.VacancyHasQuestionary" FromRole="Questionary" ToRole="Vacancies" />
+          <Property Name="FileExtension" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Role" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="Questionary" Relationship="Self.UserHasQuestionary" FromRole="User" ToRole="Questionary" />
+        </EntityType>
+        <EntityType Name="Vacancies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int32" />
+          <Property Name="NumberOfSeats" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Vacancies_Department" FromRole="Vacancies" ToRole="Department" />
+          <NavigationProperty Name="Questionary" Relationship="Self.VacancyHasQuestionary" FromRole="Vacancies" ToRole="Questionary" />
+        </EntityType>
+        <Association Name="FK_Questionary_City">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questionary">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vacancies_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Vacancies" Type="Self.Vacancies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vacancies">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questionary_Nationality">
+          <End Role="Nationality" Type="Self.Nationality" Multiplicity="1" />
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nationality">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questionary">
+              <PropertyRef Name="NationalityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserHasQuestionary">
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+        </Association>
+        <Association Name="VacancyHasQuestionary">
+          <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+          <End Role="Vacancies" Type="Self.Vacancies" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Job_vacancyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="City" EntityType="Self.City" />
+          <EntitySet Name="Department" EntityType="Self.Department" />
+          <EntitySet Name="Nationality" EntityType="Self.Nationality" />
+          <EntitySet Name="Questionary" EntityType="Self.Questionary" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="Vacancies" EntityType="Self.Vacancies" />
+          <AssociationSet Name="FK_Questionary_City" Association="Self.FK_Questionary_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="Questionary" EntitySet="Questionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vacancies_Department" Association="Self.FK_Vacancies_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Vacancies" EntitySet="Vacancies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questionary_Nationality" Association="Self.FK_Questionary_Nationality">
+            <End Role="Nationality" EntitySet="Nationality" />
+            <End Role="Questionary" EntitySet="Questionary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="UserHasQuestionary" Association="Self.UserHasQuestionary">
+            <End Role="Questionary" EntitySet="Questionary" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="VacancyHasQuestionary" Association="Self.VacancyHasQuestionary">
+            <End Role="Questionary" EntitySet="Questionary" />
+            <End Role="Vacancies" EntitySet="Vacancies" />
+          </AssociationSet>
+          <FunctionImport Name="AddUserHasQuestionary">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="QuestionaryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteQuest">
+            <Parameter Name="userId" Mode="In" Type="Int32" />
+            <Parameter Name="VacancyId" Mode="In" Type="Int32" />
+            <Parameter Name="QuestionaryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCityId" ReturnType="Collection(Int64)">
+          <Parameter Name="CityName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetCityValue" ReturnType="Collection(String)">
+          <Parameter Name="CityId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetNatianalityId" ReturnType="Collection(Int32)">
+          <Parameter Name="NatianalityName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetNationalityValue" ReturnType="Collection(String)">
+          <Parameter Name="NationalityId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetQuestionary" ReturnType="Collection(Job_vacancyModel.GetQuestionary_Result)">
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetSelectedQuestionary" ReturnType="Collection(Job_vacancyModel.GetSelectedQuestionary_Result)">
+          <Parameter Name="QestionaryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetVacanciesByDepartment" ReturnType="Collection(Job_vacancyModel.GetVacanciesByDepartment_Result)">
+          <Parameter Name="VacanciesId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetQuestionaryByVacancy" ReturnType="Collection(Job_vacancyModel.GetQuestionaryByVacancy_Result)">
+          <Parameter Name="VacancyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetVacancyByQuestionary" ReturnType="Collection(Job_vacancyModel.GetVacancyByQuestionary_Result)">
+          <Parameter Name="QuestionaryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddVacancyHasQuestionary">
+            <Parameter Name="QuestionaryId" Mode="In" Type="Int32" />
+            <Parameter Name="VacancyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetSelectedQuestionary1" ReturnType="Collection(Job_vacancyModel.GetSelectedQuestionary1_Result)">
+          <Parameter Name="QestionaryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetQuestionary_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MiddleName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TelephonNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="CityId" Nullable="false" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="false" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NationalityId" Nullable="false" />
+          <Property Type="Int32" Name="Experience" Nullable="false" />
+          <Property Type="String" Name="Info" Nullable="false" MaxLength="Max" />
+          <Property Type="Binary" Name="Photo" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="IsTaken" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetSelectedQuestionary_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MiddleName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TelephonNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="CityId" Nullable="false" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="false" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NationalityId" Nullable="false" />
+          <Property Type="Int32" Name="Experience" Nullable="false" />
+          <Property Type="String" Name="Info" Nullable="false" MaxLength="Max" />
+          <Property Type="Binary" Name="Photo" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="IsTaken" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetVacanciesByDepartment_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="DepartmentId" Nullable="true" />
+          <Property Type="Int32" Name="NumberOfSeats" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Binary" Name="Image" Nullable="true" MaxLength="Max" />
+        </ComplexType>
+        <ComplexType Name="GetQuestionaryByVacancy_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MiddleName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TelephonNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="CityId" Nullable="false" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="false" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NationalityId" Nullable="false" />
+          <Property Type="Int32" Name="Experience" Nullable="false" />
+          <Property Type="String" Name="Info" Nullable="false" MaxLength="Max" />
+          <Property Type="Binary" Name="Photo" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="IsTaken" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetVacancyByQuestionary_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="DepartmentId" Nullable="true" />
+          <Property Type="Int32" Name="NumberOfSeats" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Binary" Name="Image" Nullable="true" MaxLength="Max" />
+        </ComplexType>
+        <ComplexType Name="GetSelectedQuestionary1_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MiddleName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TelephonNumber" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="CityId" Nullable="false" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="false" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NationalityId" Nullable="false" />
+          <Property Type="Int32" Name="Experience" Nullable="false" />
+          <Property Type="String" Name="Info" Nullable="true" MaxLength="Max" />
+          <Property Type="Binary" Name="Photo" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="IsTaken" Nullable="true" />
+          <Property Type="String" Name="FileExtension" Nullable="true" MaxLength="10" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище Job_vacancyModelContainer" CdmEntityContainer="Job_vacancyEntities">
+          <EntitySetMapping Name="City">
+            <EntityTypeMapping TypeName="Job_vacancyModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Department">
+            <EntityTypeMapping TypeName="Job_vacancyModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nationality">
+            <EntityTypeMapping TypeName="Job_vacancyModel.Nationality">
+              <MappingFragment StoreEntitySet="Nationality">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questionary">
+            <EntityTypeMapping TypeName="Job_vacancyModel.Questionary">
+              <MappingFragment StoreEntitySet="Questionary">
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TelephonNumber" ColumnName="TelephonNumber" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="IsTaken" ColumnName="IsTaken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="Job_vacancyModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="Job_vacancyModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vacancies">
+            <EntityTypeMapping TypeName="Job_vacancyModel.Vacancies">
+              <MappingFragment StoreEntitySet="Vacancies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UserHasQuestionary" TypeName="Job_vacancyModel.UserHasQuestionary" StoreEntitySet="UserHasQuestionary">
+            <EndProperty Name="Questionary">
+              <ScalarProperty Name="Id" ColumnName="QuestionaryId" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="VacancyHasQuestionary" TypeName="Job_vacancyModel.VacancyHasQuestionary" StoreEntitySet="VacancyHasQuestionary">
+            <EndProperty Name="Questionary">
+              <ScalarProperty Name="Id" ColumnName="QuestionaryId" />
+            </EndProperty>
+            <EndProperty Name="Vacancies">
+              <ScalarProperty Name="Id" ColumnName="VacancyId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="AddUserHasQuestionary" FunctionName="Хранилище Job_vacancyModel.AddUserHasQuestionary" />
+          <FunctionImportMapping FunctionImportName="DeleteQuest" FunctionName="Хранилище Job_vacancyModel.DeleteQuest" />
+          <FunctionImportMapping FunctionImportName="GetCityId" FunctionName="Хранилище Job_vacancyModel.GetCityId" />
+          <FunctionImportMapping FunctionImportName="GetCityValue" FunctionName="Хранилище Job_vacancyModel.GetCityValue" />
+          <FunctionImportMapping FunctionImportName="GetNatianalityId" FunctionName="Хранилище Job_vacancyModel.GetNatianalityId" />
+          <FunctionImportMapping FunctionImportName="GetNationalityValue" FunctionName="Хранилище Job_vacancyModel.GetNationalityValue" />
+          <FunctionImportMapping FunctionImportName="GetQuestionary" FunctionName="Хранилище Job_vacancyModel.GetQuestionary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Job_vacancyModel.GetQuestionary_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TelephonNumber" ColumnName="TelephonNumber" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="IsTaken" ColumnName="IsTaken" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVacanciesByDepartment" FunctionName="Хранилище Job_vacancyModel.GetVacanciesByDepartment">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Job_vacancyModel.GetVacanciesByDepartment_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetQuestionaryByVacancy" FunctionName="Хранилище Job_vacancyModel.GetQuestionaryByVacancy">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Job_vacancyModel.GetQuestionaryByVacancy_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TelephonNumber" ColumnName="TelephonNumber" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="IsTaken" ColumnName="IsTaken" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVacancyByQuestionary" FunctionName="Хранилище Job_vacancyModel.GetVacancyByQuestionary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Job_vacancyModel.GetVacancyByQuestionary_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AddVacancyHasQuestionary" FunctionName="Хранилище Job_vacancyModel.AddVacancyHasQuestionary" />
+          <FunctionImportMapping FunctionImportName="GetSelectedQuestionary1" FunctionName="Хранилище Job_vacancyModel.GetSelectedQuestionary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Job_vacancyModel.GetSelectedQuestionary1_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TelephonNumber" ColumnName="TelephonNumber" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="IsTaken" ColumnName="IsTaken" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

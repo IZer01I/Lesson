@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище Job_vacancyModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Image" Type="image" />
+  </EntityType>
+  <EntityType Name="Nationality">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questionary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="TelephonNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CityId" Type="bigint" Nullable="false" />
+    <Property Name="DateOfBirth" Type="date" Nullable="false" />
+    <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="NationalityId" Type="int" Nullable="false" />
+    <Property Name="Experience" Type="int" Nullable="false" />
+    <Property Name="Info" Type="ntext" />
+    <Property Name="Photo" Type="image" />
+    <Property Name="IsTaken" Type="int" />
+    <Property Name="FileExtension" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Photo" Type="image" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Job_vacancy.dbo.UserHasQuestionary" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="UserHasQuestionary">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="QuestionaryId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="QuestionaryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vacancies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DepartmentId" Type="int" />
+    <Property Name="NumberOfSeats" Type="int" Nullable="false" />
+    <Property Name="Description" Type="ntext" />
+    <Property Name="Image" Type="image" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Job_vacancy.dbo.VacancyHasQuestionary" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="VacancyHasQuestionary">
+    <Key>
+      <PropertyRef Name="VacancyId" />
+      <PropertyRef Name="QuestionaryId" />
+    </Key>
+    <Property Name="VacancyId" Type="int" Nullable="false" />
+    <Property Name="QuestionaryId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Questionary_City">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Questionary">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Questionary_Nationality">
+    <End Role="Nationality" Type="Self.Nationality" Multiplicity="1" />
+    <End Role="Questionary" Type="Self.Questionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Nationality">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Questionary">
+        <PropertyRef Name="NationalityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserHasQuestionary_Questionary">
+    <End Role="Questionary" Type="Self.Questionary" Multiplicity="1" />
+    <End Role="UserHasQuestionary" Type="Self.UserHasQuestionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questionary">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserHasQuestionary">
+        <PropertyRef Name="QuestionaryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserHasQuestionary_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserHasQuestionary" Type="Self.UserHasQuestionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserHasQuestionary">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vacancies_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Vacancies" Type="Self.Vacancies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vacancies">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VacancyHasQuestionary_Questionary">
+    <End Role="Questionary" Type="Self.Questionary" Multiplicity="1" />
+    <End Role="VacancyHasQuestionary" Type="Self.VacancyHasQuestionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questionary">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VacancyHasQuestionary">
+        <PropertyRef Name="QuestionaryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VacancyHasQuestionary_Vacancies">
+    <End Role="Vacancies" Type="Self.Vacancies" Multiplicity="1" />
+    <End Role="VacancyHasQuestionary" Type="Self.VacancyHasQuestionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vacancies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VacancyHasQuestionary">
+        <PropertyRef Name="VacancyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="AddUserHasQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserId" Type="int" Mode="In" />
+    <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AddVacancyHasQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+    <Parameter Name="VacancyId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="CAUNTRIES" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="DeleteQuest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="VacancyId" Type="int" Mode="In" />
+    <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetCityId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CityName" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="GetCityValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CityId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetNatianalityId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="NatianalityName" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="GetNationalityValue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="NationalityId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetQuestionaryByVacancy" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="VacancyId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetSelectedQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="QestionaryId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetVacanciesByDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="VacanciesId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetVacancyByQuestionary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="QuestionaryId" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="Хранилище Job_vacancyModelContainer">
+    <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Nationality" EntityType="Self.Nationality" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Questionary" EntityType="Self.Questionary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vacancies" EntityType="Self.Vacancies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserHasQuestionary" EntityType="Self.UserHasQuestionary" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [UserHasQuestionary].[UserId] AS [UserId], 
+    [UserHasQuestionary].[QuestionaryId] AS [QuestionaryId]
+    FROM [dbo].[UserHasQuestionary] AS [UserHasQuestionary]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VacancyHasQuestionary" EntityType="Self.VacancyHasQuestionary" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VacancyHasQuestionary].[VacancyId] AS [VacancyId], 
+    [VacancyHasQuestionary].[QuestionaryId] AS [QuestionaryId]
+    FROM [dbo].[VacancyHasQuestionary] AS [VacancyHasQuestionary]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Questionary_City" Association="Self.FK_Questionary_City">
+      <End Role="City" EntitySet="City" />
+      <End Role="Questionary" EntitySet="Questionary" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Questionary_Nationality" Association="Self.FK_Questionary_Nationality">
+      <End Role="Nationality" EntitySet="Nationality" />
+      <End Role="Questionary" EntitySet="Questionary" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserHasQuestionary_Questionary" Association="Self.FK_UserHasQuestionary_Questionary">
+      <End Role="Questionary" EntitySet="Questionary" />
+      <End Role="UserHasQuestionary" EntitySet="UserHasQuestionary" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserHasQuestionary_User" Association="Self.FK_UserHasQuestionary_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserHasQuestionary" EntitySet="UserHasQuestionary" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vacancies_Department" Association="Self.FK_Vacancies_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Vacancies" EntitySet="Vacancies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VacancyHasQuestionary_Questionary" Association="Self.FK_VacancyHasQuestionary_Questionary">
+      <End Role="Questionary" EntitySet="Questionary" />
+      <End Role="VacancyHasQuestionary" EntitySet="VacancyHasQuestionary" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VacancyHasQuestionary_Vacancies" Association="Self.FK_VacancyHasQuestionary_Vacancies">
+      <End Role="Vacancies" EntitySet="Vacancies" />
+      <End Role="VacancyHasQuestionary" EntitySet="VacancyHasQuestionary" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

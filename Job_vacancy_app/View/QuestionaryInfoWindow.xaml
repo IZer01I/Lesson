@@ -1,0 +1,92 @@
+﻿<Window x:Class="Job_vacancy_app.View.QuestionaryInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Job_vacancy_app.View" xmlns:viewmodel="clr-namespace:Job_vacancy_app.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:QuestionaryInfoViewModel}"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Title="Информация об анкете" Height="450" Width="800" Closing="Window_Closing">
+
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" x:Name="Bd" 
+                            BorderThickness="2" CornerRadius="5" BorderBrush="Black">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+   
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="267*"/>
+            <RowDefinition Height="167*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Bahnschrift SemiBold" FontSize="16" Margin="10,10,0,0">
+            <Run Text="Должность: "/>
+            <Run Text="{Binding Vacancy}"/>
+            <LineBreak/>
+            <Run Text="Фамилия: "/>
+            <Run Text="{Binding FirstName}"/>
+            <LineBreak/>
+            <Run Text="Имя: "/>
+            <Run Text="{Binding MiddleName}"/>
+            <LineBreak/>
+            <Run Text="Отчество: "/>
+            <Run Text="{Binding LastName}"/>
+            <LineBreak/>
+            <Run Text="Дата рождения: "/>
+            <Run Text="{Binding DateOfBirth}"/>
+            <LineBreak/>
+            <Run Text="Пол: "/>
+            <Run Text="{Binding Gender}"/>
+            <LineBreak/>
+            <Run Text="Номер телефона: "/>
+            <Run Text="{Binding TelephonNumber}"/>
+            <LineBreak/>
+            <Run Text="Электронная почта: "/>
+            <Run Text="{Binding Mail}"/>
+            <LineBreak/>
+            <Run Text="Город: "/>
+            <Run Text="{Binding SelectedCity}"/>
+            <LineBreak/>
+            <Run Text="Гражданство: "/>
+            <Run Text="{Binding SelectedNationality}"/>
+            <LineBreak/>
+            <Run Text="Опыт работы: "/>
+            <Run Text="{Binding Expirience}"/>
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontFamily="Bahnschrift SemiBold" FontSize="16" Margin="10,0,10,0">
+            <Run Text="Информация: "/>
+            <LineBreak/>
+            <Run Text="{Binding Info}"/>
+        </TextBlock>
+
+        <StackPanel Grid.Column="1" >
+            <Image Source="{Binding UsesImage}" Width="200" Height="200" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0"/>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="DownloadBtn" Style="{StaticResource ButtonStyle}" Height="40" Width="170" Margin="0,0,10,0" HorizontalAlignment="Right" Click="DownloadBtn_Click">
+                    <Label Content="Загрузить файл"  FontFamily="Comic Sans MS" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+                <ComboBox Width="150" Height="25" SelectedIndex="{Binding IsTakenInt}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0">
+                    <ComboBoxItem Content="Принять"/>
+                    <ComboBoxItem Content="Отказать"/>
+                    <ComboBoxItem Content="На рассмотрении"/>
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
